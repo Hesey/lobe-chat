@@ -12,11 +12,13 @@ export const o1Models = new Set([
 export const pruneO1Payload = (payload: ChatStreamPayload) => ({
   ...payload,
   frequency_penalty: 0,
+  max_tokens: 32_000,
   messages: payload.messages.map((message: OpenAIChatMessage) => ({
     ...message,
     role: message.role === 'system' ? 'user' : message.role,
   })),
   presence_penalty: 0,
+  stream: false,
   temperature: 1,
   top_p: 1,
 });
