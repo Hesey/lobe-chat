@@ -32,7 +32,6 @@ enum HarmCategory {
   HARM_CATEGORY_HARASSMENT = 'HARM_CATEGORY_HARASSMENT',
   HARM_CATEGORY_HATE_SPEECH = 'HARM_CATEGORY_HATE_SPEECH',
   HARM_CATEGORY_SEXUALLY_EXPLICIT = 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
-  HARM_CATEGORY_CIVIC_INTEGRITY = 'HARM_CATEGORY_CIVIC_INTEGRITY',
 }
 
 enum HarmBlockThreshold {
@@ -85,10 +84,6 @@ export class LobeGoogleAI implements LobeRuntimeAI {
                 category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
                 threshold: HarmBlockThreshold.BLOCK_NONE,
               },
-              {
-                category: HarmCategory.HARM_CATEGORY_CIVIC_INTEGRITY,
-                threshold: HarmBlockThreshold.BLOCK_NONE,
-              },
             ],
           },
           { apiVersion: 'v1beta', baseUrl: this.baseURL },
@@ -126,9 +121,9 @@ export class LobeGoogleAI implements LobeRuntimeAI {
 
     return {
       ...payload,
+      max_tokens: 8192,
       messages: user_messages,
       system: system_message?.content,
-      max_tokens: 8192,
     };
   }
   private convertContentToGooglePart = async (content: UserMessageContentPart): Promise<Part> => {
