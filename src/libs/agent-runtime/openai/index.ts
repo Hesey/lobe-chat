@@ -5,11 +5,11 @@ export const pruneReasoningPayload = (payload: ChatStreamPayload) => {
   // TODO: 临时写法，后续要重构成 model card 展示配置
   const disableStreamModels = new Set([
     'o1',
-    'o1-2024-12-17'
-  ]);
-  const systemToUserModels = new Set([
+    'o1-2024-12-17',
     'o1-preview',
     'o1-preview-2024-09-12',
+  ]);
+  const systemToUserModels = new Set([
     'o1-mini',
     'o1-mini-2024-09-12',
   ]);
@@ -17,6 +17,7 @@ export const pruneReasoningPayload = (payload: ChatStreamPayload) => {
   return {
     ...payload,
     frequency_penalty: 0,
+    max_tokens: payload.model === 'o1' ? 100_000 : 32_000,
     messages: payload.messages.map((message: OpenAIChatMessage) => ({
       ...message,
       role:
@@ -27,6 +28,7 @@ export const pruneReasoningPayload = (payload: ChatStreamPayload) => {
           : message.role,
     })),
     presence_penalty: 0,
+    reasoning_effort: 'high',
     stream: !disableStreamModels.has(payload.model),
     temperature: 1,
     top_p: 1,
