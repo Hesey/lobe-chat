@@ -34,7 +34,7 @@ export const pruneReasoningPayload = (payload: ChatStreamPayload) => {
           : message.role,
     })),
     presence_penalty: 0,
-    reasoning_effort: 'high',
+    ...(payload.model.includes('preview') ? {} : { reasoning_effort: 'high' }),
     stream: !disableStreamModels.has(payload.model),
     temperature: 1,
     top_p: 1,
