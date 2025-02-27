@@ -23,7 +23,7 @@ export const pruneReasoningPayload = (payload: ChatStreamPayload) => {
   return {
     ...payload,
     frequency_penalty: 0,
-    max_tokens: payload.model === 'o1' ? 100_000 : 32_000,
+    max_tokens: (payload.model === 'o1' || payload.model === 'o3-mini') ? 100_000 : 32_000,
     messages: payload.messages.map((message: OpenAIChatMessage) => ({
       ...message,
       role:
@@ -34,7 +34,7 @@ export const pruneReasoningPayload = (payload: ChatStreamPayload) => {
           : message.role,
     })),
     presence_penalty: 0,
-    ...(payload.model.includes('preview') ? {} : { reasoning_effort: 'high' }),
+    //...(payload.model.includes('preview') ? {} : { reasoning_effort: 'high' }),
     stream: !disableStreamModels.has(payload.model),
     temperature: 1,
     top_p: 1,
